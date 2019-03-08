@@ -30,6 +30,10 @@ public class CheckTemperatureServiceApplication  implements CommandLineRunner {
 		SpringApplication.run(CheckTemperatureServiceApplication.class, args);
 	}
 	
+	/**
+	 * To run client application
+	 */
+	
 	@Override
 	public void run(String... arg0) throws Exception {	
 		Scanner scan = new Scanner(System.in);

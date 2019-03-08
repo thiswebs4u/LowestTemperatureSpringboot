@@ -47,13 +47,7 @@ public class LowestTemperatureController {
 		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 		int targetDayOfWeek = dayOfWeek == 7 ? 1 : dayOfWeek + 1;
 
-		logger.debug("Day of week = " + dayOfWeek + " Target day of week " + targetDayOfWeek);
-
-		logger.debug("endPoint = "+endPoint);
-
 		lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint+zipCode, targetDayOfWeek);
-
-		logger.debug("Tomorrows lowest temp = " + lowestTemp);
 
 		return lowestTemp;
 	}

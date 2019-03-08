@@ -51,7 +51,6 @@ public class LowestTemperatureService {
 						Attribute idAttr = startElement.getAttributeByName(new QName("dayOfWeek"));
 						if (idAttr != null) {
 							currentDayOfWeek = Integer.parseInt(idAttr.getValue());
-							logger.debug("currentDayOfWeek = "+currentDayOfWeek);
 						}
 					}
 					/**
