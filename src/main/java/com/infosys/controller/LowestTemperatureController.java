@@ -47,7 +47,10 @@ public class LowestTemperatureController {
 		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 		int targetDayOfWeek = dayOfWeek == 7 ? 1 : dayOfWeek + 1;
 
-		lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint+zipCode, targetDayOfWeek);
+		if((zipCode!=null)&&(zipCode.length() == 5)&&(Integer.valueOf(zipCode) <= 99999))
+			lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint+zipCode, targetDayOfWeek);
+		else 
+			return "Zip code not in right format";
 
 		return lowestTemp;
 	}
