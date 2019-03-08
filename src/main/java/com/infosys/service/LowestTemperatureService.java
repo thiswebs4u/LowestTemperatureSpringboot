@@ -1,6 +1,7 @@
 package com.infosys.service;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +39,7 @@ public class LowestTemperatureService {
 		int currentDayOfWeek = 0;
 		double lowestTemp = 1000.0;
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		logger.debug("targetDayOfWeek = "+targetDayOfWeek+", endpoint = "+endpoint);
 		try {
 			XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(getBufferedReader(endpoint));			
 

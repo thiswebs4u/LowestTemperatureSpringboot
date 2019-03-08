@@ -31,6 +31,8 @@ public class LowestTemperatureController {
 	@Autowired
 	private LowestTemperatureService lowestTemperatureService;
 
+	private String lowestTemp = null;
+
 	/**
 	 * getTomorrowLowestTemperature finds lowest temperature for tomorrow from given
 	 * zipcode
@@ -47,11 +49,9 @@ public class LowestTemperatureController {
 
 		logger.debug("Day of week = " + dayOfWeek + " Target day of week " + targetDayOfWeek);
 
-		String lowestTemp = null;
+		logger.debug("endPoint = "+endPoint);
 
-		endPoint += zipCode;
-
-		lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint, targetDayOfWeek);
+		lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint+zipCode, targetDayOfWeek);
 
 		logger.debug("Tomorrows lowest temp = " + lowestTemp);
 
