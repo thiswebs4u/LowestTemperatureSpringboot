@@ -10,6 +10,13 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * SpringBootApplication to host web Service and Service to get lowest temperature
+ * tomorrow given a zip code.
+ * 
+ * @author john.hart
+ *
+ */
 @SpringBootApplication(scanBasePackages = {"com.infosys"})
 public class CheckTemperatureServiceApplication  /*implements CommandLineRunner*/ {
 	private static final Logger logger = LoggerFactory.getLogger(CheckTemperatureServiceApplication.class);

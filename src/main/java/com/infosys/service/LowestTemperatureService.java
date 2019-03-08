@@ -1,8 +1,8 @@
 package com.infosys.service;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -25,14 +25,21 @@ import org.springframework.stereotype.Service;
 public class LowestTemperatureService {
 	private static final Logger logger = LoggerFactory.getLogger(LowestTemperatureService.class);
 
+	/**
+	 * getLowestTemperature Retrieves xml payload from weather service. Then parses payload looking
+	 * at temperatures for tomorrow. Compares temperatures to find and return the lowest.
+	 * 
+	 * @param endpoint
+	 * @param targetDayOfWeek
+	 * @return
+	 * @throws Exception
+	 */
 	public String getLowestTemperature(String endpoint, int targetDayOfWeek) throws Exception {
 		int currentDayOfWeek = 0;
 		double lowestTemp = 1000.0;
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 		try {
-			XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(getBufferedReader(endpoint));
-//			XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(new FileInputStream("./Weather.Service.Data.80421.xml"));
-			
+			XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(getBufferedReader(endpoint));			
 
 			while (xmlEventReader.hasNext()) {
 				XMLEvent xmlEvent = xmlEventReader.nextEvent();
@@ -70,7 +77,15 @@ public class LowestTemperatureService {
 		return String.valueOf(lowestTemp);
 	}
 
-	public BufferedReader getBufferedReader(String endpoint) throws Exception {
+	/**
+	 * Creates a BufferedReader
+	 *  
+	 * @param endpoint
+	 * @return BufferedReader
+	 * @throws IOException
+	 */
+	
+	public BufferedReader getBufferedReader(String endpoint) throws IOException {
 		URL url = new URL(endpoint);
 		url.openStream().close();
 		URLConnection con = url.openConnection();

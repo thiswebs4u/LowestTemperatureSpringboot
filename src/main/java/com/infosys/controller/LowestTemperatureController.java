@@ -6,13 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.infosys.app.CheckTemperatureServiceApplication;
 import com.infosys.service.LowestTemperatureService;
 
+/**
+ * 
+ * Finds lowest temperature for tomorrow given a zipcode.
+ * 
+ * 
+ * @author john.hart@infosys.com
+ *
+ */
 @RestController
 public class LowestTemperatureController {
 	private static final Logger logger = LoggerFactory.getLogger(LowestTemperatureController.class);
@@ -22,32 +30,37 @@ public class LowestTemperatureController {
 
 	@Autowired
 	private LowestTemperatureService lowestTemperatureService;
-	
-	@GetMapping(value = "/getTomorrowLowestTemperature/{zipCode}")
-	public String getTomorrowLowestTemperature(@PathVariable String zipCode) {
-        
-        Calendar c = Calendar.getInstance();
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        int targetDayOfWeek = dayOfWeek==7?1:dayOfWeek+1;
-        
-        logger.debug("Day of week = "+dayOfWeek+" Target day of week "+targetDayOfWeek);
-        
-        
-        String lowestTemp = null;
-        
-        endPoint += zipCode;
-        
-		try {
-			lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint, targetDayOfWeek);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-		logger.debug("Tomorrows lowest temp = "+lowestTemp);
 
-		
+	/**
+	 * getTomorrowLowestTemperature finds lowest temperature for tomorrow from given
+	 * zipcode
+	 * 
+	 * @param zipCode
+	 * @return
+	 * @throws Exception
+	 */
+	@GetMapping(value = "/getTomorrowLowestTemperature/{zipCode}")
+	public String getTomorrowLowestTemperature(@PathVariable String zipCode) throws Exception {
+		Calendar c = Calendar.getInstance();
+		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		int targetDayOfWeek = dayOfWeek == 7 ? 1 : dayOfWeek + 1;
+
+		logger.debug("Day of week = " + dayOfWeek + " Target day of week " + targetDayOfWeek);
+
+		String lowestTemp = null;
+
+		endPoint += zipCode;
+
+		lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint, targetDayOfWeek);
+
+		logger.debug("Tomorrows lowest temp = " + lowestTemp);
+
 		return lowestTemp;
+	}
+
+	@ExceptionHandler({ Exception.class })
+	public String databaseError() {
+		return "Weather Service Error";
 	}
 
 }
