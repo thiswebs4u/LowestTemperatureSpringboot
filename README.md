@@ -1,10 +1,10 @@
-#LowestTemperatureSpringboot
+# LowestTemperatureSpringboot
 
-##To Run: 
+## To Run: 
 Change to project directory mvn spring-boot:run
-##User Story: 
+## User Story: 
 As an User running an application I want to get the lowest temperature tomorrow given a zip code for USA. So that So I can prepare for tomorrow's weather
-##Acceptance Criteria: 
+## Acceptance Criteria: 
 Enter zip code for United State System returns lowest temperate in farenhight for tomorrow 
 If error occurs systems returns "Weather Service Error" or "Zip code not in right format"
 Considerations With Design:
