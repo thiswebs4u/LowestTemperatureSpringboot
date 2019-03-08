@@ -2,39 +2,52 @@ package com.infosys.controller;
 
 import java.util.Calendar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.infosys.app.CheckTemperatureServiceApplication;
 import com.infosys.service.LowestTemperatureService;
 
 @RestController
 public class LowestTemperatureController {
+	private static final Logger logger = LoggerFactory.getLogger(LowestTemperatureController.class);
+
+	@Value("${weather.service.endpoint}")
+	private String endPoint;
+
 	@Autowired
-	LowestTemperatureService lowestTemperatureService;
+	private LowestTemperatureService lowestTemperatureService;
 	
-	
-	@GetMapping(value = "/get/{zipCode}")
+	@GetMapping(value = "/getTomorrowLowestTemperature/{zipCode}")
 	public String getTomorrowLowestTemperature(@PathVariable String zipCode) {
-        String fileName = "./Weather.Service.Data.80421.xml";
         
         Calendar c = Calendar.getInstance();
-        //c.set(Calendar.DAY_OF_WEEK,7);
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         int targetDayOfWeek = dayOfWeek==7?1:dayOfWeek+1;
         
-        System.out.println("Day of week = "+dayOfWeek+" Target day of week "+targetDayOfWeek);
+        logger.debug("Day of week = "+dayOfWeek+" Target day of week "+targetDayOfWeek);
         
         
-        double lowestTemp = lowestTemperatureService.getLowestTemperature(fileName, targetDayOfWeek);
+        String lowestTemp = null;
         
-        System.out.println("Tomorrows lowest temp = "+lowestTemp);
+        endPoint += zipCode;
+        
+		try {
+			lowestTemp = lowestTemperatureService.getLowestTemperature(endPoint, targetDayOfWeek);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		logger.debug("Tomorrows lowest temp = "+lowestTemp);
 
 		
-		return "0";
+		return lowestTemp;
 	}
 
 }
